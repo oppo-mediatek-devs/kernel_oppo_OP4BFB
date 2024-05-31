@@ -901,12 +901,11 @@ again:
 		L2RISAR0 = cldma_reg_bit_gather(L2RISAR0);
 		l2qe_s_offset = CLDMA_RX_QE_OFFSET * 8;
 #endif
-		if ((L2RISAR0 & CLDMA_RX_INT_DONE & (1 << queue->index)) {
+		if ((L2RISAR0 & CLDMA_RX_INT_DONE & (1 << queue->index)) 
 			&& !(!blocking && ret == ONCE_MORE))
 			retry = 1;
-	      }	else {
+	      	else 
 			retry = 0;
-	}
 		/* where are we going */
 			if (retry) {
 				/* ACK interrupt */
