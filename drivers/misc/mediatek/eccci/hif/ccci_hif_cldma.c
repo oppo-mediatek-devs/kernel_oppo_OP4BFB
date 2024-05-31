@@ -51,7 +51,6 @@
 #include "modem_reg_base.h"
 #include "ccci_fsm.h"
 #include "ccci_port.h"
-#include "ccci_aee_handle.h"
 
 #if defined(CLDMA_TRACE) || defined(CCCI_SKB_TRACE)
 #define CREATE_TRACE_POINTS
