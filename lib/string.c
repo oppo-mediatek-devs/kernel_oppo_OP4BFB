@@ -976,7 +976,3 @@ char *stpcpy(char *__restrict__ dest, const char *__restrict__ src)
 	return --dest;
 }
 EXPORT_SYMBOL(stpcpy);
-
- #ifndef __HAVE_ARCH_STRCAT
- /**
-* strcat - Append one %NUL-terminated string to another
