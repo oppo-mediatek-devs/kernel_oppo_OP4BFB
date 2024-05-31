@@ -2770,7 +2770,7 @@ static void Audio_AmpHP_Change(int channels, bool enable)
 		 * __func__, mic_vinp_mv, Ana_Get_Reg(AUDDEC_ELR_0));
 		 */
 #endif
-		if (GetDLStatus() == true)
+		if (GetDLStatus() == true) {
 			TurnOnDacPower(AUDIO_ANALOG_DEVICE_OUT_HEADSETL);
 		/* here pmic analog control */
 			/* switch to ground to de pop-noise */
@@ -2857,6 +2857,7 @@ static void Audio_AmpHP_Change(int channels, bool enable)
 			Ana_Set_Reg(AUDDEC_ANA_CON0, 0x32ff, 0xffff);
 			/* Switch HPR MUX to audio DAC */
 			Ana_Set_Reg(AUDDEC_ANA_CON0, 0x3aff, 0xffff);
+	}
 #ifndef ANALOG_HPTRIM
 			/* Apply digital DC compensation value to DAC */
 			SetDcCompenSation(true);
