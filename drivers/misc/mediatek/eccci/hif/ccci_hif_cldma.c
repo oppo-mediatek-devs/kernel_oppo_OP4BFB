@@ -904,7 +904,6 @@ again:
 		if ((L2RISAR0 & CLDMA_RX_INT_DONE & (1 << queue->index))
 			&& !(!blocking && ret == ONCE_MORE))
 			retry = 1;
-		else
 			retry = 0;
 		/* where are we going */
 			if (retry) {
