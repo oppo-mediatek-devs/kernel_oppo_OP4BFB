@@ -904,10 +904,10 @@ again:
 		if ((L2RISAR0 & CLDMA_RX_INT_DONE & (1 << queue->index))
 			&& !(!blocking && ret == ONCE_MORE))
 			retry = 1;
-		else
-			retry = 0;
+		else        
+		        retry = 0;
 		/* where are we going */
-			if (retry) {
+		if (retry) {
 				/* ACK interrupt */
 			cldma_write32(md_ctrl->cldma_ap_pdn_base,
 				CLDMA_AP_L2RISAR0,
@@ -924,6 +924,7 @@ again:
 					flags);
 				goto again;
 			}
+			
 	}
 	spin_unlock_irqrestore(&md_ctrl->cldma_timeout_lock, flags);
 
@@ -3464,5 +3465,3 @@ int md_cd_late_init(unsigned char hif_id)
 		cldma_rx_queue_init(&md_ctrl->rxq[i]);
 	return 0;
 }
-
-

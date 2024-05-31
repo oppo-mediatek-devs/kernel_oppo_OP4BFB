@@ -501,8 +501,7 @@ static ssize_t kboard_read_proc(struct file *file, char __user *buf,
 	int len = 0;
 
 	len = sprintf(page,"%s",oppoversion.Kboard);
-
-	if(len > *off)
+        if(len > *off)
 		len -= *off;
 	else
 		len = 0;
@@ -526,8 +525,7 @@ static ssize_t mainboard_read_proc(struct file *file, char __user *buf,
 	int len = 0;
 
 	len = sprintf(page,"%s",oppoversion.Mboard);
-
-	if(len > *off)
+        if(len > *off)
 		len -= *off;
 	else
 		len = 0;
