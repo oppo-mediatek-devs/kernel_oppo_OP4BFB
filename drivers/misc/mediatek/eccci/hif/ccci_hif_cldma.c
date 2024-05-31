@@ -142,11 +142,9 @@ static int normal_tx_ring2queue[NORMAL_TXQ_NUM] = {
 #endif
 
 #define TAG "cldma"
-
 #ifdef VENDOR_EDIT
 //Yongyao.Song#PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
 //Yuanfei.Liu@PSW.NW.PWR.1257900.1284205, 2018/02/21, add for data wake up source 0,1,2
-#include <net/oppo_nwpower.h>
 #define MODEM_WAKEUP_SRC_NUM 10
 #define MD_LOG_WAKEUP_1 6
 #define MUXD_WAKEUP 10
@@ -599,11 +597,11 @@ static inline u32 cldma_reg_bit_scatter(u32 reg_g)
 //Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
 void modem_clear_wakeupsrc_count(void)
 {
-	int i = 0;
-	for(i = 0; i < MODEM_WAKEUP_SRC_NUM; i++)
-	{
-		modem_wakeup_src_count[i] = 0;
-	}
+    int i = 0;
+    for(i = 0; i < MODEM_WAKEUP_SRC_NUM; i++)
+    {
+        modem_wakeup_src_count[i] = 0;
+    }
 }
 #endif /* VENDOR_EDIT */
 /* may be called from workqueue or NAPI or tasklet (queue0) context,
@@ -1035,7 +1033,7 @@ static int cldma_gpd_bd_tx_collect(struct md_cd_queue *queue,
 	int resume_done = 0;
 #ifdef VENDOR_EDIT
 //Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
-	int first_enter = 1;
+    int first_enter = 1;
 #endif /* VENDOR_EDIT */
 	while (1) {
 		spin_lock_irqsave(&queue->ring_lock, flags);
@@ -1107,53 +1105,51 @@ static int cldma_gpd_bd_tx_collect(struct md_cd_queue *queue,
 				"CLDMA_AP wakeup source:(%d/%d)(%u)\n",
 				queue->index, ccci_h->channel,
 				md_ctrl->wakeup_count);
-#ifdef VENDOR_EDIT
-//Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
-//Yuanfei.Liu@PSW.NW.PWR.1257900.1284205, 2018/02/21, add for data wake up source 0,1,2
+            #ifdef VENDOR_EDIT
+			//Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
+			//Yuanfei.Liu@PSW.NW.PWR.1257900.1284205, 2018/02/21, add for data wake up source 0,1,2
 			if(first_enter == 1){
-				oppo_match_qmi_wakeup(2, ccci_h->channel);
-				switch(ccci_h->channel){
-					case MD_LOG_WAKEUP_1:
-						modem_wakeup_src_count[0]++;
-						break;
-					case MUXD_WAKEUP:
-						modem_wakeup_src_count[1]++;
-						break;
-					case NVRAM_WAKEUP:
-						modem_wakeup_src_count[2]++;
-						break;
-					case DATA_WAKEUP_0:
-					case DATA_WAKEUP_1:
-					case DATA_WAKEUP_2:
-						modem_wakeup_src_count[3]++;
-						break;
-					case READ_AP_WAKEUP:
-						modem_wakeup_src_count[4]++;
-						break;
-					case WCN_WAKEUP:
-						modem_wakeup_src_count[5]++;
-						break;
-					case MD_LOG_WAKEUP_2:
-					case MD_LOG_WAKEUP_3:
-						//channel 42 is the same with channel 6
-						modem_wakeup_src_count[0]++;
-						break;
-					case IMS_WAKEUP:
-						modem_wakeup_src_count[6]++;
-						break;
-					case MD_STATUS_WAKEUP:
-						modem_wakeup_src_count[7]++;
-						break;
-					case AGPS_WAKEUP:
-						modem_wakeup_src_count[8]++;
-						break;
-					default:
-						modem_wakeup_src_count[9]++;
-						break;
-				}
-				first_enter = 0;
+			    switch(ccci_h->channel){
+			        case MD_LOG_WAKEUP_1:
+			            modem_wakeup_src_count[0]++;
+			            break;
+			        case MUXD_WAKEUP:
+			            modem_wakeup_src_count[1]++;
+			            break;
+			        case NVRAM_WAKEUP:
+			            modem_wakeup_src_count[2]++;
+			            break;
+			        case DATA_WAKEUP_0:
+			        case DATA_WAKEUP_1:
+			        case DATA_WAKEUP_2:
+			            modem_wakeup_src_count[3]++;
+			            break;
+			       case READ_AP_WAKEUP:
+			            modem_wakeup_src_count[4]++;
+			            break;
+			       case WCN_WAKEUP:
+			            modem_wakeup_src_count[5]++;
+			            break;
+			        case MD_LOG_WAKEUP_2:
+			        case MD_LOG_WAKEUP_3:
+			            //channel 42 is the same with channel 6
+			            modem_wakeup_src_count[0]++;
+			            break;
+			        case IMS_WAKEUP:
+			            modem_wakeup_src_count[6]++;
+			            break;
+			        case MD_STATUS_WAKEUP:
+			            modem_wakeup_src_count[7]++;
+			            break;
+			        case AGPS_WAKEUP:
+			            modem_wakeup_src_count[8]++;
+			            break;
+			        default:
+			            modem_wakeup_src_count[9]++;
+			    }
+			    first_enter = 0;
 			}
-#endif /* VENDOR_EDIT */
+			#endif /* VENDOR_EDIT */
 		}
 		CCCI_DEBUG_LOG(md_ctrl->md_id, TAG,
 			"harvest Tx msg (%x %x %x %x) txq=%d len=%d\n",
@@ -1229,7 +1225,7 @@ static int cldma_gpd_tx_collect(struct md_cd_queue *queue,
 	unsigned int dma_len;
 #ifdef VENDOR_EDIT
 //Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
-	int first_enter = 1;
+    int first_enter = 1;
 #endif /* VENDOR_EDIT */
 
 	while (1) {
@@ -1299,53 +1295,51 @@ static int cldma_gpd_tx_collect(struct md_cd_queue *queue,
 				"CLDMA_AP wakeup source:(%d/%d)(%u)\n",
 				queue->index, ccci_h->channel,
 				md_ctrl->wakeup_count);
-#ifdef VENDOR_EDIT
-//Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
-//Yuanfei.Liu@PSW.NW.PWR.1257900.1284205, 2018/02/21, add for data wake up source 0,1,2
+			#ifdef VENDOR_EDIT
+			//Yongyao.Song@PSW.NW.PWR.1053636, 2017/08/01, add for modem wake up source
+			//Yuanfei.Liu@PSW.NW.PWR.1257900.1284205, 2018/02/21, add for data wake up source 0,1,2
 			if(first_enter == 1){
-				oppo_match_qmi_wakeup(2, ccci_h->channel);
-				switch(ccci_h->channel){
-					case MD_LOG_WAKEUP_1:
-						modem_wakeup_src_count[0]++;
-						break;
-					case MUXD_WAKEUP:
-						modem_wakeup_src_count[1]++;
-						break;
-					case NVRAM_WAKEUP:
-						modem_wakeup_src_count[2]++;
-						break;
-					case DATA_WAKEUP_0:
-					case DATA_WAKEUP_1:
-					case DATA_WAKEUP_2:
-						modem_wakeup_src_count[3]++;
-						break;
-					case READ_AP_WAKEUP:
-						modem_wakeup_src_count[4]++;
-						break;
-					case WCN_WAKEUP:
-						modem_wakeup_src_count[5]++;
-						break;
-					case MD_LOG_WAKEUP_2:
-					case MD_LOG_WAKEUP_3:
-						//channel 42 is the same with channel 6
-						modem_wakeup_src_count[0]++;
-						break;
-					case IMS_WAKEUP:
-						modem_wakeup_src_count[6]++;
-						break;
-					case MD_STATUS_WAKEUP:
-						modem_wakeup_src_count[7]++;
-						break;
-					case AGPS_WAKEUP:
-						modem_wakeup_src_count[8]++;
-						break;
-					default:
-						modem_wakeup_src_count[9]++;
-						break;
-				}
-				first_enter = 0;
+			    switch(ccci_h->channel){
+			        case MD_LOG_WAKEUP_1:
+			            modem_wakeup_src_count[0]++;
+			            break;
+			        case MUXD_WAKEUP:
+			            modem_wakeup_src_count[1]++;
+			            break;
+			        case NVRAM_WAKEUP:
+			            modem_wakeup_src_count[2]++;
+			            break;
+			        case DATA_WAKEUP_0:
+			        case DATA_WAKEUP_1:
+			        case DATA_WAKEUP_2:
+			            modem_wakeup_src_count[3]++;
+			            break;
+			       case READ_AP_WAKEUP:
+			            modem_wakeup_src_count[4]++;
+			            break;
+			       case WCN_WAKEUP:
+			            modem_wakeup_src_count[5]++;
+			            break;
+			        case MD_LOG_WAKEUP_2:
+			        case MD_LOG_WAKEUP_3:
+			            //channel 42 is the same with channel 6
+			            modem_wakeup_src_count[0]++;
+			            break;
+			        case IMS_WAKEUP:
+			            modem_wakeup_src_count[6]++;
+			            break;
+			        case MD_STATUS_WAKEUP:
+			            modem_wakeup_src_count[7]++;
+			            break;
+			        case AGPS_WAKEUP:
+			            modem_wakeup_src_count[8]++;
+			            break;
+			        default:
+			            modem_wakeup_src_count[9]++;
+			    }
+			    first_enter = 0;
 			}
-#endif /* VENDOR_EDIT */
+			#endif /* VENDOR_EDIT */
 		}
 		CCCI_DEBUG_LOG(md_ctrl->md_id, TAG,
 				"harvest Tx msg (%x %x %x %x) txq=%d len=%d\n",
@@ -2027,7 +2021,7 @@ void cldma_stop(unsigned char hif_id)
 				 */
 				dump_emi_latency();
 #if defined(CONFIG_MTK_AEE_FEATURE)
-				ccci_aed_md_exception_api(NULL, 0, NULL, 0,
+				aed_md_exception_api(NULL, 0, NULL, 0,
 					"md1:\nUNKNOWN Exception\nstop Tx CLDMA failed.\n",
 					DB_OPT_DEFAULT);
 #endif
@@ -2073,7 +2067,7 @@ void cldma_stop(unsigned char hif_id)
 				 */
 				dump_emi_latency();
 #if defined(CONFIG_MTK_AEE_FEATURE)
-				ccci_aed_md_exception_api(NULL, 0, NULL, 0,
+				aed_md_exception_api(NULL, 0, NULL, 0,
 					"md1:\nUNKNOWN Exception\nstop Rx CLDMA failed.\n",
 					DB_OPT_DEFAULT);
 #endif
@@ -2196,7 +2190,7 @@ void cldma_stop_for_ee(unsigned char hif_id)
 				 */
 				dump_emi_latency();
 #if defined(CONFIG_MTK_AEE_FEATURE)
-				ccci_aed_md_exception_api(NULL, 0, NULL, 0,
+				aed_md_exception_api(NULL, 0, NULL, 0,
 					"md1:\nUNKNOWN Exception\nstop Tx CLDMA for EE failed.\n",
 					DB_OPT_DEFAULT);
 #endif
@@ -2242,7 +2236,7 @@ void cldma_stop_for_ee(unsigned char hif_id)
 				 */
 				dump_emi_latency();
 #if defined(CONFIG_MTK_AEE_FEATURE)
-				ccci_aed_md_exception_api(NULL, 0, NULL, 0,
+				aed_md_exception_api(NULL, 0, NULL, 0,
 					"md1:\nUNKNOWN Exception\nstop Rx CLDMA for EE failed.\n",
 					DB_OPT_DEFAULT);
 #endif
